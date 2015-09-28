@@ -9,7 +9,7 @@ A simple, lightweight JavaScript API for handling cookies
 * [Unobtrusive](#json) JSON support
 * Supports AMD/CommonJS
 * [RFC 6265](http://www.rfc-editor.org/rfc/rfc6265.txt) compliant
-* Enable [custom decoding](#converter)
+* Enable [custom encoding/decoding](#converters)
 * **~800 bytes** gzipped!
 
 **If you're viewing this at https://github.com/js-cookie/js-cookie, you're reading the documentation for the master branch.
@@ -200,7 +200,9 @@ Cookies.get('name'); // => 'value'
 Cookies.remove('name', { secure: true });
 ```
 
-## Converter
+## Converters
+
+### Read
 
 Create a new instance of the api that overrides the default decoding implementation.  
 All get methods that rely in a proper decoding to work, such as `Cookies.get()` and `Cookies.get('name')`, will run the converter first for each cookie.  
@@ -228,6 +230,28 @@ Example for parsing the value from a cookie generated with PHP's `setcookie()` m
 Cookies.withConverter(function (value) {
     return value.replace(/\+/g, ' ');
 }).get('foo');
+```
+
+You can also pass an object literal:
+
+```javascript
+Cookies.withConverter({
+    read: function (value, name) {
+        // Convert
+    }
+});
+```
+
+### Write
+
+Create a new instance of the api that overrides the default encoding implementation:
+
+```javascript
+Cookies.withConverter({
+    write: function (value, name) {
+        // Convert
+    }
+});
 ```
 
 ## Contributing
